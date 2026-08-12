@@ -39,11 +39,15 @@ def predict(network, x):
 
 x, t = get_data()
 network = init_network()
+
+batch_size = 100  # バッチサイズ
 accuracy_cnt = 0
-for i in range(len(x)):
-    y = predict(network, x[i])
-    p = np.argmax(y)  # 最も確率の高い要素のインデックスを取得
-    if p == t[i]:
-        accuracy_cnt += 1
+for i in range(0, len(x), batch_size):
+    x_batch = x[i:i+batch_size]
+    t_batch = t[i:i+batch_size]
+    y_batch = predict(network, x_batch)
+    p_batch = np.argmax(y_batch, axis=1)
+    accuracy_cnt += np.sum(p_batch == t_batch) 
+    accuracy_cnt += 1
 
 print("Accuracy: " + str(float(accuracy_cnt) / len(x)))
