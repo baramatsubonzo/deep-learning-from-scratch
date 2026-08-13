@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .claude/*
+
+# .gz から自動生成されるキャッシュ(dataset/mnist.py が無ければ作り直す)
+dataset/*.pkl
