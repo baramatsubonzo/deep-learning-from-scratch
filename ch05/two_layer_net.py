@@ -1,7 +1,7 @@
 import numpy as np
 import sys, os
 sys.path.append(os.pardir)  # 親ディレクトリのファイル
-from common.layers import Affine, Relu
+from common.layers import Affine, Relu, SoftmaxWithLoss
 from common.functions import sigmoid, softmax, cross_entropy_error
 from common.gradient import numerical_gradient
 from collections import OrderedDict
@@ -20,6 +20,8 @@ class TwoLayerNet:
         self.layers['Relu1'] = Relu()
         self.layers['Affine2'] = Affine(self.params['W2'], self.params['b2'])
 
+        self.lastLayer = SoftmaxWithLoss()
+
     def predict(self,x):
         for layer in self.layers.values():
             x = layer.forward(x)
@@ -28,7 +30,7 @@ class TwoLayerNet:
     def loss(self, x, t):
         y = self.predict(x)
 
-        return cross_entropy_error(y, t)
+        return self.lastLayer.forward(y, t)
 
     def accuracy(self, x, t):
         y = self.predict(x)
